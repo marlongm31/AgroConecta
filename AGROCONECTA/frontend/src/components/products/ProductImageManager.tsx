@@ -6,6 +6,7 @@ import { productService } from '../../services/productService';
 import { useOffline } from '../../context/OfflineContext';
 import { getErrorMessage } from '../../lib/errors';
 import type { ProductImage } from '../../types';
+import { assetUrl } from '../../lib/assetUrl';
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const MAX_IMAGES = 6;
@@ -116,7 +117,7 @@ export function ProductImageManager({ productId, onChanged }: { productId: numbe
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
           {images.map((image) => (
             <div key={image.id} className="relative overflow-hidden rounded-lg border border-slate-200">
-              <img src={image.imageUrl} alt={`Fotografía ${image.position + 1} del producto`} className="h-28 w-full object-cover" />
+              <img src={assetUrl(image.imageUrl)} alt={`Fotografía ${image.position + 1} del producto`} className="h-28 w-full object-cover" />
               <Button
                 variant="ghost"
                 className="absolute right-1 top-1 bg-white/90 text-red-600"
