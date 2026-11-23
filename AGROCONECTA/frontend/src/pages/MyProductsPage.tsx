@@ -18,6 +18,7 @@ import {
 } from '../utils/labels';
 import { formatCurrency, formatNumber } from '../utils/format';
 import { getProductStatus, PRODUCT_STATUS_META } from '../utils/productStatus';
+import { assetUrl } from '../lib/assetUrl';
 import type {
   MeasurementUnit,
   Product,
@@ -194,7 +195,7 @@ export function MyProductsPage() {
             return (
               <article key={product.id} className="card flex h-full flex-col overflow-hidden">
                 {product.imageUrls?.[0] ? (
-                  <img src={product.imageUrls[0]} alt={`Fotografía de ${product.name}`} className="h-36 w-full object-cover" />
+                  <img src={assetUrl(product.imageUrls[0])} alt={`Fotografía de ${product.name}`} className="h-36 w-full object-cover" />
                 ) : null}
                 <div className="flex flex-1 flex-col p-5">
                   <div className="flex flex-wrap items-start justify-between gap-2">
