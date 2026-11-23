@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: agroconecta-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-agroconecta}
+      POSTGRES_USER: ${POSTGRES_USER:-agroconecta}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-agroconecta}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - agroconecta-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-agroconecta} -d ${POSTGRES_DB:-agroconecta}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    container_name: agroconecta-backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-agroconecta}
+      DB_USER: ${POSTGRES_USER:-agroconecta}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-agroconecta}
+      JWT_SECRET: ${JWT_SECRET:-agroconecta-clave-de-desarrollo-local-cambiar-en-produccion-2026}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8081}
+      UPLOAD_DIR: ${UPLOAD_DIR:-/app/uploads}
+      WEATHER_GEOCODING_URL: ${WEATHER_GEOCODING_URL:-https://geocoding-api.open-meteo.com/v1/search}
+      WEATHER_FORECAST_URL: ${WEATHER_FORECAST_URL:-https://api.open-meteo.com/v1/forecast}
+      WEATHER_CACHE_TTL_SECONDS: ${WEATHER_CACHE_TTL_SECONDS:-900}
+      WEATHER_CONNECT_TIMEOUT_MS: ${WEATHER_CONNECT_TIMEOUT_MS:-5000}
+      WEATHER_READ_TIMEOUT_MS: ${WEATHER_READ_TIMEOUT_MS:-8000}
+    volumes:
+      - agroconecta-uploads:/app/uploads
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: agroconecta-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  agroconecta-pgdata:
+  agroconecta-uploads:

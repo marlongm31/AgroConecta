@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:agroconecta_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    enabled: false
+  jackson:
+    default-property-inclusion: non_null
+
+app:
+  jwt:
+    secret: agroconecta-clave-secreta-para-pruebas-automatizadas-2026
+    expiration-ms: 3600000
+  cors:
+    allowed-origins: http://localhost:5173
+  storage:
+    upload-dir: target/test-uploads
+  weather:
+    geocoding-url: https://geocoding-api.open-meteo.com/v1/search
+    forecast-url: https://api.open-meteo.com/v1/forecast
+    cache-ttl-seconds: 900
+    connect-timeout-ms: 2000
+    read-timeout-ms: 3000
+
+springdoc:
+  api-docs:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    com.agroconecta: WARN
+    org.hibernate: WARN
