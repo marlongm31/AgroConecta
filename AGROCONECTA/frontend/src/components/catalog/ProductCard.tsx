@@ -5,6 +5,7 @@ import type { Product } from '../../types';
 import { PRODUCT_CATEGORY_LABELS } from '../../utils/labels';
 import { formatCurrency, formatNumber } from '../../utils/format';
 import { getProductStatus, PRODUCT_STATUS_META } from '../../utils/productStatus';
+import { assetUrl } from '../../lib/assetUrl';
 
 interface ProductCardProps {
   product: Product;
@@ -26,7 +27,7 @@ export function ProductCard({
   return (
     <article className="card flex flex-col overflow-hidden">
       {product.imageUrls?.[0] ? (
-        <img src={product.imageUrls[0]} alt={`Fotografía de ${product.name}`} className="h-40 w-full object-cover" />
+        <img src={assetUrl(product.imageUrls[0])} alt={`Fotografía de ${product.name}`} className="h-40 w-full object-cover" />
       ) : (
         <div className="flex h-40 w-full items-center justify-center bg-slate-100 text-slate-400">
           <Store className="h-9 w-9" />

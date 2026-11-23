@@ -7,6 +7,7 @@ import type { Product } from '../../types';
 import { MEASUREMENT_UNIT_LABELS, PRODUCT_CATEGORY_LABELS } from '../../utils/labels';
 import { formatCurrency, formatDate, formatNumber } from '../../utils/format';
 import { getProductStatus, PRODUCT_STATUS_META } from '../../utils/productStatus';
+import { assetUrl } from '../../lib/assetUrl';
 
 interface ProductDetailModalProps {
   product: Product | null;
@@ -66,7 +67,7 @@ export function ProductDetailModal({
         <div>
           <div className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-slate-50">
             <img
-              src={images[imageIndex]}
+              src={assetUrl(images[imageIndex])}
               alt={`Fotografía ${imageIndex + 1} de ${product.name}`}
               className="h-full w-full object-contain p-2"
             />
@@ -103,7 +104,7 @@ export function ProductDetailModal({
                     index === imageIndex ? 'border-agro-600' : 'border-transparent'
                   }`}
                 >
-                  <img src={image} alt="" className="h-full w-full object-contain p-1" />
+                  <img src={assetUrl(image)} alt="" className="h-full w-full object-contain p-1" />
                 </button>
               ))}
             </div>
